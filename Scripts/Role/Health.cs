@@ -11,4 +11,16 @@ public class Health : MonoBehaviour
 				curHealth = Mathf.Max (0, curHealth + value);
 				curHealth = Mathf.Min (curHealth, maxHealth);
 		}
+
+		void Update ()
+		{
+				if (curHealth <= 0) {
+						if (gameObject.tag == Tags.player) {
+								gameObject.GetComponent<PlayerAction> ().enabled = false;
+						} else {
+								//gameObject.GetComponent<EnemyAI> ().enabled = false;
+								Destroy (gameObject);
+						}
+				}
+		}
 }
