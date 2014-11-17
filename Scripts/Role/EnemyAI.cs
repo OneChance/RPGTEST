@@ -35,7 +35,7 @@ public class EnemyAI : MonoBehaviour
 				myTransform = transform;
 				playerHealth = player.GetComponent<Health> ();
 				myHeight = GameObject.Find ("ratkin_body").renderer.bounds.size.y;
-				playerHeight = GameObject.Find ("Graphics").renderer.bounds.size.y;
+				playerHeight = GameObject.Find ("Skeletonl_base").renderer.bounds.size.y;
 				oriPosition = myTransform.position;
 				newPos = oriPosition;
 				patrolTimer = patrolStandTime;

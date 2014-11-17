@@ -12,6 +12,9 @@ public class PlayerAction : MonoBehaviour
 		private Transform myTransform;
 		private float attackTimer;
 		public List<GameObject> enemys;
+		public float moveVerticalSpeed = 2f;
+		public float moveHorizontalSpeed = 2f;
+		public float runSpeed = 6f;
 
 		void Awake ()
 		{
@@ -21,6 +24,8 @@ public class PlayerAction : MonoBehaviour
 
 		void Update ()
 		{
+				PlayerMovement ();
+
 				if (attackTimer > 0) {
 						attackTimer -= Time.deltaTime;
 				}		
@@ -49,7 +54,7 @@ public class PlayerAction : MonoBehaviour
 				if (index == enemys.Count) {
 						index = 0;
 				}
-
+					
 				selectedEnemy = enemys [index];
 				selectedEnemy.layer = Layers.outlineLayer;
 		}
@@ -78,5 +83,15 @@ public class PlayerAction : MonoBehaviour
 								Debug.Log ("Enemy is on your back!!!");
 						}
 				}
+		}
+
+		void PlayerMovement ()
+		{
+				float h = Input.GetAxis ("Horizontal");
+				float v = Input.GetAxis ("Vertical");
+
+				transform.Translate (Vector3.forward * v * moveVerticalSpeed * Time.deltaTime);
+				transform.Translate (Vector3.right * h * moveVerticalSpeed * Time.deltaTime);
+				
 		}
 }

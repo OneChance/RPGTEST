@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent (typeof(Camera))]
 public class SelectObject : MonoBehaviour {
 	
-	public int Iterations = 3;
+	public int Iterations = 2;
 	public float Spread = 0.7f;
 	public Color outterColor = new Color(0.133f,1,0,1);
 	
