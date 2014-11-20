@@ -9,22 +9,29 @@ public class PlayerAction : MonoBehaviour
 		public float attackRange = 2.2f;
 		public float attackInterval = 1f;
 		public int attackPower = 10;
+		public bool run = false;
 		private Transform myTransform;
 		private float attackTimer;
 		public List<GameObject> enemys;
 		public float moveVerticalSpeed = 2f;
 		public float moveHorizontalSpeed = 2f;
 		public float runSpeed = 6f;
+		private Animator anim;
+		private HashIDs hash;
+		private bool jumping = false;
+		private float h;
+		private float v;
 
 		void Awake ()
 		{
 				myTransform = transform;
 				GetEnemy ();
+				anim = GetComponent<Animator> ();
+				hash = GameObject.FindGameObjectWithTag (Tags.gameController).GetComponent<HashIDs> ();
 		}
 
 		void Update ()
 		{
-				PlayerMovement ();
 
 				if (attackTimer > 0) {
 						attackTimer -= Time.deltaTime;
@@ -34,6 +41,16 @@ public class PlayerAction : MonoBehaviour
 						SelecteEnemy ();
 				}
 
+				if (Input.GetButtonDown ("RunSwitch")) {
+						SwitchRunWalk ();
+				}
+
+				if (Input.GetButtonDown ("Jump")) {	
+						Jump ();
+				}
+
+				StatusCheck ();
+
 				if (Input.GetButtonDown ("Fire1")) {
 						if (selectedEnemy != null) {
 								if (Vector3.Distance (selectedEnemy.transform.position, myTransform.position) <= attackRange) {
@@ -41,6 +58,35 @@ public class PlayerAction : MonoBehaviour
 								}
 						}
 				}
+
+				PlayerMovement ();
+		}
+
+		void StatusCheck ()
+		{
+				if (anim.GetCurrentAnimatorStateInfo (0).nameHash == hash.jumpState) {
+						anim.SetBool (hash.jumpBool, false);
+				} else {
+						jumping = false;
+				}
+		}
+
+		void SwitchRunWalk ()
+		{
+				run = !run;
+				anim.SetBool (hash.runBool, run);
+		}
+
+		void Jump ()
+		{
+				if (!jumping) {
+						rigidbody.AddForce (Vector3.up * 300);				
+						jumping = true;
+						
+						if (Mathf.Abs (h) != 1 && Mathf.Abs (v) != 1) {
+								anim.SetBool (hash.jumpBool, true);
+						}						
+				}				
 		}
 
 		void SelecteEnemy ()
@@ -87,11 +133,34 @@ public class PlayerAction : MonoBehaviour
 
 		void PlayerMovement ()
 		{
-				float h = Input.GetAxis ("Horizontal");
-				float v = Input.GetAxis ("Vertical");
+				h = Input.GetAxis ("Horizontal");
+				v = Input.GetAxis ("Vertical");
 
-				transform.Translate (Vector3.forward * v * moveVerticalSpeed * Time.deltaTime);
-				transform.Translate (Vector3.right * h * moveVerticalSpeed * Time.deltaTime);
+				var newHSpeed = moveHorizontalSpeed;
+				var newVSpeed = moveVerticalSpeed;
+
+
+				if (Mathf.Abs (v) == 1f && Mathf.Abs (h) == 1f) {
+						newHSpeed = moveHorizontalSpeed * 0.5f;
+						newVSpeed = moveVerticalSpeed * 0.5f;
+				}
+
+				if (run) {
+						newHSpeed *= 3;
+						if (v > 0)
+								newVSpeed *= 3;
+				}
+							
+				transform.Translate (Vector3.forward * v * newVSpeed * Time.deltaTime);
+				transform.Translate (Vector3.right * h * newHSpeed * Time.deltaTime);
+
+				//未找到斜线走跑动画，融合效果不好，暂时屏蔽横向移动
+				if (Mathf.Abs (v) == 1f) {
+						h = 0f;
+				}
+
+				anim.SetFloat (hash.hSpeedFloat, h);
+				anim.SetFloat (hash.vSpeedFloat, v);
 				
 		}
 }
