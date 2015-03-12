@@ -80,7 +80,7 @@ public class PlayerAction : MonoBehaviour
 		void Jump ()
 		{
 				if (!jumping) {
-						rigidbody.AddForce (Vector3.up * 300);				
+						GetComponent<Rigidbody>().AddForce (Vector3.up * 300);				
 						jumping = true;
 						
 						if (Mathf.Abs (h) != 1 && Mathf.Abs (v) != 1) {

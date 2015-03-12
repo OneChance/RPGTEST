@@ -13,8 +13,8 @@ public class ShowSelected : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		myColor = renderer.material.color;
-		myShader = renderer.material.shader;
+		myColor = GetComponent<Renderer>().material.color;
+		myShader = GetComponent<Renderer>().material.shader;
 		selectedShader = Shader.Find("Hidden/RimLightSpce");
 		if(!selectedShader)
 		{
@@ -29,12 +29,12 @@ public class ShowSelected : MonoBehaviour {
 	}
 	  void OnMouseEnter() {
         //renderer.material.color = Color.black;
-		renderer.material.shader = selectedShader;
-		renderer.material.SetColor("_RimColor",outterColor);
+		GetComponent<Renderer>().material.shader = selectedShader;
+		GetComponent<Renderer>().material.SetColor("_RimColor",outterColor);
     }
 	void OnMouseExit(){
-		renderer.material.color = myColor;
-		renderer.material.shader = myShader;
+		GetComponent<Renderer>().material.color = myColor;
+		GetComponent<Renderer>().material.shader = myShader;
 	}
 	void OnMouseDown(){
 		Selected  = !Selected;

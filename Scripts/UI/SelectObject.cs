@@ -91,7 +91,7 @@ public class SelectObject : MonoBehaviour {
 		}
 		if(!outterLineTexture)
 		{
-			outterLineTexture =  new RenderTexture( (int)camera.pixelWidth,(int)camera.pixelHeight, 16 );
+			outterLineTexture =  new RenderTexture( (int)GetComponent<Camera>().pixelWidth,(int)GetComponent<Camera>().pixelHeight, 16 );
 			outterLineTexture.hideFlags = HideFlags.DontSave;
 		}
 		

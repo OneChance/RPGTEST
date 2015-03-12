@@ -52,12 +52,12 @@ public class ShowSelectedBump : MonoBehaviour {
 		if(Selected)
 		{
 			SetLayerRecursively(gameObject,8);
-			animation.Play();
+			GetComponent<Animation>().Play();
 		}
 		else
 		{
 			SetLayerRecursively(gameObject,0);
-			animation.Stop();
+			GetComponent<Animation>().Stop();
 		}
 			
 	}
