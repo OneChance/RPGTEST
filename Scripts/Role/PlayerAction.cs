@@ -18,7 +18,6 @@ public class PlayerAction : MonoBehaviour
 		public float runSpeed = 6f;
 		private Animator anim;
 		private HashIDs hash;
-		private bool jumping = false;
 		private float h;
 		private float v;
 
@@ -49,8 +48,6 @@ public class PlayerAction : MonoBehaviour
 						Jump ();
 				}
 
-				StatusCheck ();
-
 				if (Input.GetButtonDown ("Fire1")) {
 						if (selectedEnemy != null) {
 								if (Vector3.Distance (selectedEnemy.transform.position, myTransform.position) <= attackRange) {
@@ -62,29 +59,33 @@ public class PlayerAction : MonoBehaviour
 				PlayerMovement ();
 		}
 
-		void StatusCheck ()
-		{
-				if (anim.GetCurrentAnimatorStateInfo (0).nameHash == hash.jumpState) {
-						anim.SetBool (hash.jumpBool, false);
-				} else {
-						jumping = false;
-				}
-		}
-
 		void SwitchRunWalk ()
 		{
 				run = !run;
 				anim.SetBool (hash.runBool, run);
 		}
 
-		void Jump ()
+		bool CheckGrounded ()
 		{
-				if (!jumping) {
-						GetComponent<Rigidbody>().AddForce (Vector3.up * 300);				
-						jumping = true;
-						
+				//检测是否在地面
+				RaycastHit hit;
+				if (Physics.Raycast (transform.position, -Vector3.up, out hit, 100.0F)) {
+						float distanceToGround = hit.distance;
+						if (distanceToGround < 0.1) {
+								return true;
+						}
+				}
+
+				return false;
+		}
+
+		void Jump ()
+		{			
+				if (CheckGrounded ()) {
+						GetComponent<Rigidbody> ().AddForce (Vector3.up * 300);				
+
 						if (Mathf.Abs (h) != 1 && Mathf.Abs (v) != 1) {
-								anim.SetBool (hash.jumpBool, true);
+							anim.SetTrigger(hash.jumpTrigger);
 						}						
 				}				
 		}

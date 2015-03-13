@@ -7,7 +7,7 @@ public class HashIDs : MonoBehaviour
 		public int hSpeedFloat;
 		public int vSpeedFloat;
 		public int runBool;
-		public int jumpBool;
+		public int jumpTrigger;
 		public int jumpState;
 
 		void Awake ()
@@ -16,7 +16,7 @@ public class HashIDs : MonoBehaviour
 				hSpeedFloat = Animator.StringToHash ("hSpeed");
 				vSpeedFloat = Animator.StringToHash ("vSpeed");
 				runBool = Animator.StringToHash ("isRun");
-				jumpBool = Animator.StringToHash ("isJump");
+				jumpTrigger = Animator.StringToHash ("jump");
 				jumpState = Animator.StringToHash ("Base Layer.IdleJump");
 		}
 }
